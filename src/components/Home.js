@@ -4,6 +4,9 @@ import Img2 from '../images/slide1.png'
 
 
 class Home extends Component {
+    componentDidMount() {
+    this.props.history.push('/')
+  }
 
     render() {
         const image = {
