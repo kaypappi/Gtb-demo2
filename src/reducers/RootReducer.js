@@ -4,11 +4,11 @@ const InitState = {
   ],
 
   Reservation: [
-    { id: '1', reg_id: '1', cname: 'Team Ferrari', address: '12 Driveby street, Area, City, State.', email: 'foo@example.com', cphone: '08039003900' }
+    { id: '1', reg_id: '1',ref_no:22334567, cname: 'Team Ferrari', address: '12 Driveby street, Area, City, State.', email: 'foo@example.com', cphone: '08039003900' }
   ],
 
   company: [
-    { id: '1', reg_id: '1', ref_no: 22334, business: 'Active', address: '12 Driveby street, Area, City, State.', email: 'foo@example.com' }
+    { id: '1', reg_id: '1', ref_no: 22334567, business: 'Active', address: '12 Driveby street, Area, City, State.', email: 'foo@example.com' }
   ],
 
   proprietors: [
@@ -40,7 +40,7 @@ const rootReducer = (state = InitState, action) => {
 
   if (action.type === 'CREATE_RESERVATION') {
 
-    let newReserve = { id: action.id.toString(), reg_id: action.reg_id.toString(), cname: action.cname, address: action.address, email: action.email, cphone: action.phone }
+    let newReserve = { id: action.id.toString(), reg_id: action.reg_id.toString(),ref_no:action.ref_no, cname: action.cname, address: action.address, email: action.email, cphone: action.phone }
     return {
       ...state,
       Reservation: [

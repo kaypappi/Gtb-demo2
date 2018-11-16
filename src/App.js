@@ -3,8 +3,11 @@ import 'materialize-css/dist/css/materialize.min.css'
 import { BrowserRouter, Route } from 'react-router-dom'
 import Home from './components/Home'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faGhost, faSearch, faHome, faArrowRight, faArrowDown, faLock, faPlus, faCreditCard, faUniversity } from '@fortawesome/free-solid-svg-icons'
+import { faGhost, faSearch, faHome, faArrowRight, faArrowDown, faLock, faPlus, faCreditCard, faUniversity, faBars } from '@fortawesome/free-solid-svg-icons'
 import Navbar2 from './components/Navbar2'
+import 'jquery';
+import 'materialize-css/dist/js/materialize.min.js'
+import 'materialize-css/dist/css/materialize.min.css'
 import Sidebarleft from './components/SidebarLeft'
 import SideBar from './components/Sidebar'
 import SideBarRight from './components/SidebarRight'
@@ -15,7 +18,7 @@ import SectionC from './components/SectionC'
 import ProfilePage from './pages/ProfilePage'
 
 
-library.add(faGhost, faSearch, faHome, faArrowRight, faArrowDown, faLock, faPlus, faCreditCard, faUniversity)
+library.add(faGhost, faSearch, faHome, faArrowRight, faArrowDown, faLock, faPlus, faCreditCard, faUniversity, faBars)
 
 class App extends Component {
   render() {

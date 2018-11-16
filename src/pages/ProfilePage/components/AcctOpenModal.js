@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Modal from 'react-modal'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import M from "materialize-css/dist/js/materialize.min.js";
 
 import Simi from '../../images/simi.jpg'
 import Img4 from '../../images/737.png'
@@ -20,6 +21,12 @@ class Profile extends Component {
     showNafdacBtn: false,
     showEfccBtn: false,
     showFirsBtn: false,
+    accountants: [
+      { name: 'CHIBUZOR DIKE', Email: 'chibuzordike@gtbank.com', phone: 08033445566 },
+      { name: 'DANIEL OKPOLOR', Email: 'danielokpolor@gtbank.com', phone: 08077445588 },
+      { name: 'EBONY ARAMIDE', Email: 'ebonyaramide@gtbank.com', phone: 07033445566 },
+      { name: 'HAUWA BALA', Email: 'hauwabala@gtbank.com', phone: 09033445566 }
+    ]
   }
   openModal = (modalContext) => {
     this.setState({ [modalContext]: true });
@@ -27,6 +34,11 @@ class Profile extends Component {
 
   closeModal = (modalContext) => {
     this.setState({ [modalContext]: false });
+  }
+
+  componentDidMount() {
+    console.log(M);
+    M.AutoInit();
   }
 
   handleValidateClick = (e) => {
@@ -96,8 +108,14 @@ class Profile extends Component {
                       <div className='col s12 m4'>
                         <h6>Account Officer</h6>
                       </div>
-                      <div className='col s12 m8'>
-                        <input type='text'></input>
+                      <div className='col s12 m8 input-field'>
+                        <select id='Mid' defaultValue="">
+                          <option value="" disabled >Choose your option</option>
+                          <option value="1">CHIBUZOR DIKE</option>
+                          <option value="2">DANIEL OKPOLOR</option>
+                          <option value="3">EBONY ARAMIDE</option>
+                          <option value="4">HAUWA BALA</option>
+                        </select>
                       </div>
                     </div>
                     <div className='row'>

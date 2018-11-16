@@ -3,6 +3,7 @@ import Img4 from '../images/cac.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import M from "materialize-css/dist/js/materialize.min.js";
 import Dropzone from 'react-dropzone';
 import request from 'superagent';
 
@@ -13,6 +14,22 @@ class Proprietor extends Component {
     uploadedIdFile: '',
     uploadedPhotoUrl: '',
     uploadedPhotoFile: '',
+    reg_id: null,
+    c_id: null
+  }
+  componentDidMount() {
+    console.log(M);
+    M.AutoInit();
+
+    let reg_id = this.props.reg_id
+    let c_id = this.props.c_id
+
+    console.log(this.props)
+
+    this.setState({
+      reg_id: reg_id,
+      c_id: c_id
+    })
   }
 
   onImageDropId = (files) => {
@@ -75,8 +92,8 @@ class Proprietor extends Component {
     e.preventDefault()
     console.log(this.props.store)
     let id = this.props.store.proprietors.length + 1
-    let reg_id = this.state.id
-    let c_id = this.state.cname
+    let reg_id = this.state.reg_id
+    let c_id = this.state.c_id
     let surname = document.getElementById('surname').value
     let firstname = document.getElementById('firstname').value
     let othernames = document.getElementById('othernames').value
@@ -92,7 +109,7 @@ class Proprietor extends Component {
 
     this.props.addProp(id.toString(), reg_id, c_id, surname, firstname, othernames, address, phone, email, Mid, id_card, photo, bvn)
 
-    return this.props.history.push('/Sectionc' + id)
+    //return this.props.history.push('/Sectionc' + id)
 
 
 
@@ -102,87 +119,101 @@ class Proprietor extends Component {
   render() {
 
     return (
-      <div className='card-content'>
-        <form onSubmit={this.onSubmitB}>
-          <div className='row'>
-            <div className='col s12 m4'><h6 className='left'>Name:</h6></div>
-            <div className='col s12 m8'>
-              <div className='row'>
-                <div className='col s4'><input id='surname'  type='text' placeholder='Surname'></input></div>
-                <div className='col s4'><input id='firstname'  type='text' placeholder='First name'></input></div>
-                <div className='col s4'><input id='othernames'  type='text' placeholder='Other names'></input></div>
+      <div className='card' >
+        <div className='card-content'>
+          <form onSubmit={this.onSubmitB}>
+            <div className='row'>
+              <div className='col s12 m4'><h6 className='left'>Name:</h6></div>
+              <div className='col s12 m8'>
+                <div className='row'>
+                  <div className='col s4'><input id='surname' type='text' placeholder='Surname'></input></div>
+                  <div className='col s4'><input id='firstname' type='text' placeholder='First name'></input></div>
+                  <div className='col s4'><input id='othernames' type='text' placeholder='Other names'></input></div>
+                </div>
+
               </div>
-
             </div>
-          </div>
-          <div className='row'>
-            <div className='col s12 m4'><h6 className='left'>Address:</h6></div>
-            <div className='col s12 m8'><input id='address'  type='text'></input></div>
-          </div>
-          <div className='row'>
-            <div className='col s12 m4'><h6 className='left'>Phone No:</h6></div>
-            <div className='col s12 m8'><input id='phone'  type='number'></input></div>
-          </div>
-          <div className='row'>
-            <div className='col s12 m4'><h6 className='left'>Email:</h6></div>
-            <div className='col s12 m8'><input id='email'  type='email'></input></div>
-          </div>
-          <div className='row'>
-            <div className='col s12 m4'><h6 className='left'>Means of Identification:</h6></div>
-            <div className='col s12 m8'>
-              <div className='row'>
-                <div className='col s3'><input id='Mid'  type='text'></input></div>
-                <div className='col s9'>
-                  <Dropzone
-                    multiple={false}
-                    accept="image/*"
-                    onDrop={this.onImageDropId}>
+            <div className='row'>
+              <div className='col s12 m4'><h6 className='left'>Address:</h6></div>
+              <div className='col s12 m8'><input id='address' type='text'></input></div>
+            </div>
+            <div className='row'>
+              <div className='col s12 m4'><h6 className='left'>Phone No:</h6></div>
+              <div className='col s12 m8'><input id='phone' type='number'></input></div>
+            </div>
+            <div className='row'>
+              <div className='col s12 m4'><h6 className='left'>Email:</h6></div>
+              <div className='col s12 m8'><input id='email' type='email'></input></div>
+            </div>
+            <div className='row'>
+              <div className='col s12 m4'><h6 className='left'>Means of Identification:</h6></div>
+              <div className='col s12 m8'>
+                <div className='row'>
+                  <div className='col s3 input-field'>
+                  
+               
+                <select id='Mid' defaultValue="">
+                  <option value="" disabled >Choose your option</option>
+                  <option value="Driver's Licience">Driver's Licience</option>
+                  <option value="International Passport">International Passport</option>
+                  <option value="National Id">National Id</option>
+                  <option value="Voters Card">Voters Card</option>
+                </select>
+               
+              
+             
+                  </div>
+                  <div className='col s9'>
+                    <Dropzone
+                      multiple={false}
+                      accept="image/*"
+                      onDrop={this.onImageDropId}>
 
-                    <div>
-                      {this.state.uploadedIdUrl === '' ? <p className='center orange-text text-darken-4'>Drop an image or click to select a file to upload.</p> :
-                        <div>
-                          <p>{this.state.uploadedIdFile.name}</p>
-                          <img className='responsive-img' src={this.state.uploadedIdUrl} />
-                        </div>}
-                    </div>
-                  </Dropzone>
+                      <div>
+                        {this.state.uploadedIdUrl === '' ? <p className='center orange-text text-darken-4'>Drop an image or click to select a file to upload.</p> :
+                          <div>
+                            <p>{this.state.uploadedIdFile.name}</p>
+                            <img className='responsive-img' src={this.state.uploadedIdUrl} />
+                          </div>}
+                      </div>
+                    </Dropzone>
+
+                  </div>
 
                 </div>
 
               </div>
-
             </div>
-          </div>
-          <div className='row'>
-            <div className='col s12 m4'><h6 className='left'>Signature<br />(Input Your BVN):</h6></div>
-            <div className='col s12 m8'><input id='bvn'  type='number'></input></div>
-          </div>
-          <div className='row'>
-            <div className='col s12 m4'><img className='responsive-img' src={Img4} alt="" /></div>
-            <div className='col s12 m8'>
-              <Dropzone
-                multiple={false}
-                accept="image/*"
-                onDrop={this.onImageDropPhoto}>
-
-                <div>
-                  {this.state.uploadedPhototUrl === '' ? <p className='center orange-text text-darken-4'>Drop an image or click to select a file to upload.</p> :
-                    <div>
-                      <p>{this.state.uploadedPhotoFile.name}</p>
-                      <img className='responsive-img' src={this.state.uploadedPhotoUrl} />
-                    </div>}
-                </div>
-              </Dropzone>
+            <div className='row'>
+              <div className='col s12 m4'><h6 className='left'>Signature<br />(Input Your BVN):</h6></div>
+              <div className='col s12 m8'><input id='bvn' type='number'></input></div>
             </div>
-          </div>
-          <div className='left'>
-            <a className='btn btn-large orange  darken-4' href="/">Preview</a>
+            <div className='row'>
+              <div className='col s12 m4'><img className='responsive-img' src={Img4} alt="" /></div>
+              <div className='col s12 m8'>
+                <Dropzone
+                  multiple={false}
+                  accept="image/*"
+                  onDrop={this.onImageDropPhoto}>
 
-          </div>
-          <div className='right'>
-            <button className='btn btn-large green'>Submit</button>
-          </div>
-        </form>
+                  <div>
+                    {this.state.uploadedPhototUrl === '' ? <p className='center orange-text text-darken-4'>Drop an image or click to select a file to upload.</p> :
+                      <div>
+                        <p>{this.state.uploadedPhotoFile.name}</p>
+                        <img className='responsive-img' src={this.state.uploadedPhotoUrl} />
+                      </div>}
+                  </div>
+                </Dropzone>
+              </div>
+            </div>
+            <div className='row'>
+              <div className='col s4 m4 right'>
+                <button className='btn btn-large green'>Submit</button>
+              </div>
+            </div>
+
+          </form>
+        </div>
       </div>
     )
   }
@@ -190,20 +221,20 @@ class Proprietor extends Component {
 
 const mapStateToProps = (state) => {
   return {
-      store: state
+    store: state
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      addCompany: (id, reg_id, ref_no, business, address, email) => { dispatch({ type: 'CREATE_COMPANY', id: id, reg_id: reg_id, ref_no: ref_no, address: address, email: email, business: business }) },
-      addProp: (id, reg_id, c_id, surname, firstname, othernames, address, phone, email, Mid, id_card, photo, bvn) => {
-          dispatch({
-              type: 'ADDPROP',
-              id: id, reg_id: reg_id, c_id: c_id, surname: surname, firstname: firstname, othernames: othernames,
-              address: address, phone: phone, email: email, Mid: Mid, id_card: id_card, photo: photo, bvn: bvn
-          })
-      }
+    addCompany: (id, reg_id, ref_no, business, address, email) => { dispatch({ type: 'CREATE_COMPANY', id: id, reg_id: reg_id, ref_no: ref_no, address: address, email: email, business: business }) },
+    addProp: (id, reg_id, c_id, surname, firstname, othernames, address, phone, email, Mid, id_card, photo, bvn) => {
+      dispatch({
+        type: 'ADDPROP',
+        id: id, reg_id: reg_id, c_id: c_id, surname: surname, firstname: firstname, othernames: othernames,
+        address: address, phone: phone, email: email, Mid: Mid, id_card: id_card, photo: photo, bvn: bvn
+      })
+    }
   }
 
 }

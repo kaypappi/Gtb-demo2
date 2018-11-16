@@ -1,14 +1,22 @@
 import React, { Component } from 'react'
 import Img4 from '../images/cac.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import M from "materialize-css/dist/js/materialize.min.js";
+import { Button, Card, Row, Col, Input, Icon } from 'react-materialize';
+import $ from 'jquery'
 import { Link } from 'react-router-dom'
+import ReactDOM from 'react-dom';
 import { connect } from 'react-redux'
+import Modal from 'react-modal'
 import Dropzone from 'react-dropzone';
 import request from 'superagent';
+import Proprietor from './proprietor'
+import Preview from './preview'
 
 class Registration extends Component {
     state = {
         currentForm: 'form1',
+        firsModalIsOpen: false,
         ref_no: null,
         business: null,
         cname: null,
@@ -19,35 +27,43 @@ class Registration extends Component {
         uploadedIdFile: '',
         uploadedPhotoUrl: '',
         uploadedPhotoFile: '',
-
-        Proprietor: [
-            {
-                surname: null,
-                firstname: null,
-                othernames: null, address: null, phone: null, email: null, Mid: null,
-                bvn: null, idcard: null, photo: null
-            }
-        ]
-
+        value: [], count: 1
 
     }
 
+    openModal = (modalContext) => {
+        this.setState({ [modalContext]: true });
+    }
+
+    closeModal = (modalContext) => {
+        this.setState({ [modalContext]: false });
+    }
+
+
+
     componentDidMount() {
+
+        console.log(M);
+        M.AutoInit();
+
         console.log('ftcvygvbyg')
         let id = this.props.match.params.user_id.toString()
         let cname = this.getfield1(id, 'cname')
         let address = this.getfield1(id, 'address')
+        let ref_no = this.getfield1(id, 'ref_no')
         let email = this.getfield1(id, 'email')
 
         this.setState({
             cname: cname,
             address: address,
             email: email,
+            ref_no: ref_no,
             id: id
         })
 
-        console.log(this.state, id, cname)
+        console.log(this.state, id, cname, ref_no)
     }
+
 
     onImageDropId = (files) => {
         this.setState({
@@ -137,32 +153,35 @@ class Registration extends Component {
 
 
     }
-    onSubmitB = (e) => {
-        e.preventDefault()
-        console.log(this.props.store)
-        let id = this.props.store.proprietors.length + 1
-        let reg_id = this.state.id
-        let c_id = this.state.cname
-        let surname = document.getElementById('surname').value
-        let firstname = document.getElementById('firstname').value
-        let othernames = document.getElementById('othernames').value
-        let address = document.getElementById('address').value
-        let phone = document.getElementById('phone').value
-        let email = document.getElementById('email').value
-        let Mid = document.getElementById('Mid').value
-        let id_card = this.state.uploadedIdUrl
-        let photo = this.state.uploadedPhotoUrl
-        let bvn = document.getElementById('bvn').value
 
-        console.log(id, reg_id, c_id, surname, firstname, othernames, address, phone, email, Mid, id_card, photo, bvn)
 
-        this.props.addProp(id.toString(), reg_id, c_id, surname, firstname, othernames, address, phone, email, Mid, id_card, photo, bvn)
-
+    onSubmitB = () => {
+        let id = this.props.match.params.user_id.toString()
         return this.props.history.push('/Sectionc' + id)
+    }
 
+    on
 
+    addMore() {
+        this.setState({ count: this.state.count + 1 })//on click add more forms
+    }
+    removeClick() {
+        this.setState({ count: this.state.count - 1 })
+    }
 
+    displayForm() {
+        let forms = [];
+        let id = this.props.match.params.user_id.toString()
+        let c_id = this.getfield1(id, 'reg_id')
+        for (let i = 0; i < this.state.count; i++) {
+            forms.push(
+                <div key={i}>
+                    <Proprietor reg_id={id} c_id={c_id}></Proprietor>
 
+                </div>
+            )
+        }
+        return forms || null;
     }
 
     getfield1 = (id, field) => {
@@ -189,6 +208,8 @@ class Registration extends Component {
         const currentForm = this.state.currentForm
         const users = this.props.store.users
         const reserve = this.props.store.Reservation
+        const id = this.props.match.params.user_id.toString()
+        const c_id = this.getfield1(id, 'reg_id')
         const CLOUDINARY_UPLOAD_PRESET = 'kaypappi';
         const CLOUDINARY_UPLOAD_URL = 'http://res.cloudinary.com/kaypappi/image/upload/kaypappi';
         console.log(users, reserve)
@@ -218,11 +239,25 @@ class Registration extends Component {
                                 </div>
                                 <div className='row'>
                                     <div className='col s12 m4'><h6 className='left'>Ref No:</h6></div>
-                                    <div className='col s12 m8'><input onChange={(e) => this.handleChange('ref_no', e.target.value)} id='ref_no' type='text'></input></div>
+                                    <div className='col s12 m8'><input onChange={(e) => this.handleChange('ref_no', e.target.value)} id='ref_no' type='number' defaultValue={this.state.ref_no}></input></div>
                                 </div>
                                 <div className='row'>
                                     <div className='col s12 m4'><h6 className='left'>Nature Of Business:</h6></div>
-                                    <div className='col s12 m8'><input onChange={(e) => this.handleChange('business', e.target.value)} id='business' type='text'></input></div>
+                                    <div className='col s12 m8 input-field'>
+
+                                        <select onChange={(e) => this.handleChange('business', e.target.value)} ref="dropdown" defaultValue="1">
+                                            <option value="" disabled>Choose your option</option>
+                                            <option value="Education">Education</option>
+                                            <option value="Farming">Farming</option>
+                                            <option value="Importation">Importation</option>
+                                            <option value="Haulage">Haulage</option>
+                                            <option value="Hospitality">Hospitality</option>
+                                            <option value="Pharmaceuticals">Pharmaceuticals</option>
+                                            <option value="Real Estate">Real Estate</option>
+                                            <option value="Transportation">Transportation</option>
+                                        </select>
+
+                                    </div>
                                 </div>
                                 <div className='row'>
                                     <div className='col s12 m4'><h6 className='left'>Address:</h6></div>
@@ -234,101 +269,45 @@ class Registration extends Component {
                                 </div>
                                 <button className='btn btn-large green' >Next</button>
                             </form>
+
                         </div>
                     </div>
                 </div> <br />
 
-                <div className='container'>
-                    <div className='card' style={{ display: `${currentForm === 'form2' ? 'block' : 'none'}` }}>
-                        <h4 className='card-header'>Section B:Proprietor Details</h4>
-                        <div className='card-content'>
-                            <form onSubmit={this.onSubmitB}>
-                                <div className='row'>
-                                    <div className='col s12 m4'><h6 className='left'>Name:</h6></div>
-                                    <div className='col s12 m8'>
-                                        <div className='row'>
-                                            <div className='col s4'><input id='surname' onChange={(e) => this.handleChange2('surname', e.target.value)} type='text' placeholder='Surname'></input></div>
-                                            <div className='col s4'><input id='firstname' onChange={(e) => this.handleChange2('firstname', e.target.value)} type='text' placeholder='First name'></input></div>
-                                            <div className='col s4'><input id='othernames' onChange={(e) => this.handleChange2('othernames', e.target.value)} type='text' placeholder='Other names'></input></div>
-                                        </div>
+                <div className='container' style={{ display: `${currentForm === 'form2' ? 'block' : 'none'}` }}>
+                    <h4 className='card-header ' >Section B:Proprietor Details</h4>
 
-                                    </div>
-                                </div>
-                                <div className='row'>
-                                    <div className='col s12 m4'><h6 className='left'>Address:</h6></div>
-                                    <div className='col s12 m8'><input id='address' onChange={(e) => this.handleChange2('address', e.target.value)} type='text'></input></div>
-                                </div>
-                                <div className='row'>
-                                    <div className='col s12 m4'><h6 className='left'>Phone No:</h6></div>
-                                    <div className='col s12 m8'><input id='phone' onChange={(e) => this.handleChange2('phone', e.target.value)} type='number'></input></div>
-                                </div>
-                                <div className='row'>
-                                    <div className='col s12 m4'><h6 className='left'>Email:</h6></div>
-                                    <div className='col s12 m8'><input id='email' onChange={(e) => this.handleChange2('email', e.target.value)} type='email'></input></div>
-                                </div>
-                                <div className='row'>
-                                    <div className='col s12 m4'><h6 className='left'>Means of Identification:</h6></div>
-                                    <div className='col s12 m8'>
-                                        <div className='row'>
-                                            <div className='col s3'><input id='Mid' onChange={(e) => this.handleChange2('Mid', e.target.value)} type='text'></input></div>
-                                            <div className='col s9'>
-                                                <Dropzone
-                                                    multiple={false}
-                                                    accept="image/*"
-                                                    onDrop={this.onImageDropId}>
 
-                                                    <div>
-                                                        {this.state.uploadedIdUrl === '' ? <p className='center orange-text text-darken-4'>Drop an image or click to select a file to upload.</p> :
-                                                            <div>
-                                                                <p>{this.state.uploadedIdFile.name}</p>
-                                                                <img className='responsive-img' src={this.state.uploadedIdUrl} />
-                                                            </div>}
-                                                    </div>
-                                                </Dropzone>
 
-                                            </div>
+                    {this.displayForm()}
 
-                                        </div>
 
-                                    </div>
-                                </div>
-                                <div className='row'>
-                                    <div className='col s12 m4'><h6 className='left'>Signature<br />(Input Your BVN):</h6></div>
-                                    <div className='col s12 m8'><input id='bvn' onChange={(e) => this.handleChange2('bvn', e.target.value)} type='number'></input></div>
-                                </div>
-                                <div className='row'>
-                                    <div className='col s12 m4'><img className='responsive-img' src={Img4} alt="" /></div>
-                                    <div className='col s12 m8'>
-                                        <Dropzone
-                                            multiple={false}
-                                            accept="image/*"
-                                            onDrop={this.onImageDropPhoto}>
 
-                                            <div>
-                                                {this.state.uploadedPhototUrl === '' ? <p className='center orange-text text-darken-4'>Drop an image or click to select a file to upload.</p> :
-                                                    <div>
-                                                        <p>{this.state.uploadedPhotoFile.name}</p>
-                                                        <img className='responsive-img' src={this.state.uploadedPhotoUrl} />
-                                                    </div>}
-                                            </div>
-                                        </Dropzone>
-                                    </div>
-                                </div>
-                                <div className='left'>
-                                    <a className='btn btn-large orange  darken-4' href="/">Preview</a>
-
-                                </div>
-                                <div className='right'>
-                                    <button className='btn btn-large green'>Submit</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
                 </div>
 
                 <div className='' style={{ display: `${currentForm === 'form2' ? 'block' : 'none'}` }}>
                     <br />
-                    <div className='left'><button className='btn btn-large green'><FontAwesomeIcon icon='plus'></FontAwesomeIcon>Add Proprietor/Director</button></div>
+                    <div className='row'>
+                        <div className='col s4 left'><button className='btn btn-large green' onClick={this.addMore.bind(this)}><FontAwesomeIcon icon='plus'></FontAwesomeIcon>Add Proprietor</button></div>
+                        <div className='col s4 center'>
+                            <button className='btn btn-large orange  darken-4' onClick={() => this.openModal('firsModalIsOpen')} >Preview</button>
+
+                        </div>
+                        <div className='col s4 right'><button className='btn btn-large red' onClick={this.removeClick.bind(this)}>Remove Proprietor</button></div>
+                    </div>
+                    <Modal
+                        isOpen={this.state.firsModalIsOpen}
+                        onRequestClose={() => this.closeModal('firsModalIsOpen')}
+                        contentLabel="FIRS Form">
+                        <div className='container green'>
+                            <Preview id={id}></Preview>
+                            <button className='btn btn-large left red' onClick={() => { this.closeModal('firsModalIsOpen')}}>Submit</button>
+                            <button className='btn btn-large right orange darken-4' onClick={() => { this.closeModal('firsModalIsOpen'); this.onSubmitB() }}>Submit</button>
+                        </div>
+
+                    </Modal>
+
+
                     <br /><br />
                 </div>
 

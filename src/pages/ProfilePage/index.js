@@ -3,6 +3,9 @@ import Modal from 'react-modal'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { connect } from 'react-redux'
 
+import 'materialize-css/dist/css/materialize.min.css'
+import M from 'materialize-css/dist/js/materialize.min.js'
+
 import Simi from '../../images/simi.jpg'
 import Img4 from '../../images/737.png'
 import Img1 from '../../images/firs.jpg'
@@ -10,10 +13,11 @@ import Img2 from '../../images/nafdac.png'
 import Img3 from '../../images/efcc.jpg'
 import Img5 from '../../images/SON.png'
 import MainOption from './components/MainOption'
-import FirsModal from'./components/FirsModal'
+import FirsModal from './components/FirsModal'
 import NafdacModal from './components/NafdacModal'
 import Sculm from './components/Sculm'
-import SonModal from'./components/SonModal'
+import SonModal from './components/SonModal'
+import Library from './components/library'
 
 Modal.setAppElement(document.getElementById('root'))
 
@@ -30,11 +34,18 @@ class Profile extends Component {
     showNafdacBtn: false,
     showEfccBtn: false,
     showFirsBtn: false,
-    showSonBtn:false,
-    id:null
+    showSonBtn: false,
+    id: null,
+    accountants: [
+      { name: 'CHIBUZOR DIKE', Email: 'chibuzordike@gtbank.com', phone: '08033445566' },
+      { name: 'DANIEL OKPOLOR', Email: 'danielokpolor@gtbank.com', phone: '08077445588' },
+      { name: 'EBONY ARAMIDE', Email: 'ebonyaramide@gtbank.com', phone: '07033445566' },
+      { name: 'HAUWA BALA', Email: 'hauwabala@gtbank.com', phone: '09033445566' }
+    ]
   }
 
-  
+
+
 
   openModal = (modalContext) => {
     this.setState({ [modalContext]: true });
@@ -42,6 +53,12 @@ class Profile extends Component {
 
   closeModal = (modalContext) => {
     this.setState({ [modalContext]: false });
+  }
+
+  componentDidMount() {
+    console.log(M);
+    M.AutoInit();
+    console.log('cgvhjkjhgfd')
   }
 
   handleValidateClick = (e) => {
@@ -52,24 +69,24 @@ class Profile extends Component {
     this.setState({ selectedPaymentMethod: e.target.value })
   }
   getfield = (id, field) => {
-    let pro=this.props.pro.proprietors
+    let pro = this.props.pro.proprietors
     let user = pro.find(user => user.id === id.toString())
     return user[field];
-}
+  }
 
-getfield2 = (id, field) => {
-  
-  let comp=this.props.pro.company
-  console.log(comp)
-  let user = comp.find(user => user.id === id.toString())
-  return user[field];
-}
+  getfield2 = (id, field) => {
 
-  
+    let comp = this.props.pro.company
+    console.log(comp)
+    let user = comp.find(user => user.id === id.toString())
+    return user[field];
+  }
+
+
   getfield3 = (id, field) => {
-    let reserve=this.props.pro.Reservation
+    let reserve = this.props.pro.Reservation
     console.log(reserve)
-      
+
     let user = reserve.find(user => user.id === id.toString())
     return user[field];
   }
@@ -84,45 +101,45 @@ getfield2 = (id, field) => {
       showSonBtn
     } = this.state
 
-    const pro=this.props.pro.proprietors
-    
-    
-    const id=this.props.match.params.user_id.toString()
-    console.log(id,pro)
-    const cname=this.getfield3(id,'cname')
-    const address=this.getfield2(id,'address');
-    const business=this.getfield2(id,'business')
-    const email=this.getfield3(id,'email')
-    const phone=this.getfield3(id,'cphone')
-    const pname=pro.filter(pros=>pros.reg_id===id).map(pros=>{
-      return pros.surname+' '+pros.firstname+' '+ pros.othernames
+    const pro = this.props.pro.proprietors
+
+
+    const id = this.props.match.params.user_id.toString()
+    console.log(id, pro)
+    const cname = this.getfield3(id, 'cname')
+    const address = this.getfield2(id, 'address');
+    const business = this.getfield2(id, 'business')
+    const email = this.getfield3(id, 'email')
+    const phone = this.getfield3(id, 'cphone')
+    const pname = pro.filter(pros => pros.reg_id === id).map(pros => {
+      return pros.surname + ' ' + pros.firstname + ' ' + pros.othernames
     }).join(',')
-    const pemail=pro.find(pros=>pros.id===id).email
-    const pPhone=pro.find(pros=>pros.id==id).phone
-    
-    console.log(cname,address,business,pname,pemail,pPhone)
+    const pemail = pro.find(pros => pros.id === id).email
+    const pPhone = pro.find(pros => pros.id == id).phone
+
+    console.log(cname, address, business, pname, pemail, pPhone)
 
     const getfield = (id, field) => {
-      
+
       let user = pro.find(user => user.id === id.toString())
       return user[field];
-  }
+    }
 
-  
+
 
 
 
     return (
       <div className='row'>
         <div className='col s3 push-s1'>
-          <h6>Welcome,<p className='orange-text text-darken-4'>{getfield(id,'surname')+' '+getfield(id,'firstname')+' '+getfield(id,'othernames')}</p></h6>
-          <img className='responsive-img' src={getfield(id,'photo')} alt="" />
+          <h6>Welcome,<p className='orange-text text-darken-4'>{getfield(id, 'surname') + ' ' + getfield(id, 'firstname') + ' ' + getfield(id, 'othernames')}</p></h6>
+          <img className='responsive-img' src={getfield(id, 'photo')} alt="" />
           <button className='btn btn-large green'>Update Bio</button>
         </div>
         <div className='col s7 push-s1'>
           <div className='row'>
             <MainOption title="GTBank Products" />
-            <MainOption title="Library" />
+            <Library></Library>
           </div>
           <div className='row'>
             <MainOption title="FAQs" />
@@ -181,7 +198,7 @@ getfield2 = (id, field) => {
                               <div className='col s12 m4'>
                                 <h6>Account Officer</h6>
                               </div>
-                              <div className='col s12 m8'>
+                              <div className='col s12 m8 input-field'>
                                 <input type='text'></input>
                               </div>
                             </div>
@@ -238,7 +255,7 @@ getfield2 = (id, field) => {
                                                 name="paymentMethod"
                                                 value="card"
                                                 checked={selectedPaymentMethod === 'card'}
-                                                onChange={this.handlePaymentMethodChange } />
+                                                onChange={this.handlePaymentMethodChange} />
                                               <span><FontAwesomeIcon icon='credit-card' color='#e65100' size='6x'></FontAwesomeIcon></span>
                                             </label>
                                           </div>
@@ -283,7 +300,7 @@ getfield2 = (id, field) => {
                                     </tbody>
                                   </table>
                                 </div>
-                                <button onClick={()=>{this.closeModal('openAcctModalIsOpen'); this.closeModal('paymentModalIsOpen')}} className='btn btn-large green'>Close</button>
+                                <button onClick={() => { this.closeModal('openAcctModalIsOpen'); this.closeModal('paymentModalIsOpen') }} className='btn btn-large green'>Close</button>
                               </div>
                               <br /><br />
                             </div>
@@ -305,10 +322,10 @@ getfield2 = (id, field) => {
                   onRequestClose={() => this.closeModal('firsModalIsOpen')}
                   contentLabel="FIRS Form">
                   <div className='container'>
-                    <FirsModal cname={cname} address={address } business={business} pname={pname} email={email} phone={phone}></FirsModal>
-                    <button className='btn btn-large green' onClick={() => {this.setState({ showNafdacBtn: true }); this.closeModal('firsModalIsOpen') }}>Submit</button>
+                    <FirsModal cname={cname} address={address} business={business} pname={pname} email={email} phone={phone}></FirsModal>
+                    <button className='btn btn-large green' onClick={() => { this.setState({ showNafdacBtn: true }); this.closeModal('firsModalIsOpen') }}>Submit</button>
                   </div>
-                  
+
                 </Modal>
                 <div className='col s3' onClick={() => this.openModal('nafdacModalIsOpen')} style={{ display: `${showNafdacBtn ? 'block' : 'none'}` }}>
                   <img src={Img2} className='responsive-img' alt="" />
@@ -318,10 +335,10 @@ getfield2 = (id, field) => {
                   onRequestClose={() => this.closeModal('nafdacModalIsOpen')}
                   contentLabel="NAFDAC Form">
                   <div className='container'>
-                    <NafdacModal cname={cname} address={address } business={business} email={email} ></NafdacModal>
-                    <button className='btn green' onClick={() => {this.setState({ showEfccBtn: true });this.closeModal('nafdacModalIsOpen')}}>Submit</button>
+                    <NafdacModal cname={cname} address={address} business={business} email={email} ></NafdacModal>
+                    <button className='btn green' onClick={() => { this.setState({ showEfccBtn: true }); this.closeModal('nafdacModalIsOpen') }}>Submit</button>
                   </div>
-                  
+
                 </Modal>
                 <div className='col s3' onClick={() => this.openModal('efccModalIsOpen')} style={{ display: `${showEfccBtn ? 'block' : 'none'}` }}>
                   <img src={Img3} className='responsive-img' alt="" />
@@ -331,8 +348,8 @@ getfield2 = (id, field) => {
                   onRequestClose={() => this.closeModal('efccModalIsOpen')}
                   contentLabel="EFCC Form">
                   <div className=''>
-                    <Sculm cname={cname} address={address } business={business} pname={pname} email={email} phone={phone} pemail={pemail} pPhone={pPhone}></Sculm>
-                    <button onClick={() => {this.setState({ showSonBtn: true });this.closeModal('efccModalIsOpen')}} className='btn green'>Submit</button>
+                    <Sculm cname={cname} address={address} business={business} pname={pname} email={email} phone={phone} pemail={pemail} pPhone={pPhone}></Sculm>
+                    <button onClick={() => { this.setState({ showSonBtn: true }); this.closeModal('efccModalIsOpen') }} className='btn green'>Submit</button>
                   </div>
                 </Modal>
                 <div className='col s3' onClick={() => this.openModal('sonModalIsOpen')} style={{ display: `${showSonBtn ? 'block' : 'none'}` }}>
@@ -343,10 +360,10 @@ getfield2 = (id, field) => {
                   onRequestClose={() => this.closeModal('sonModalIsOpen')}
                   contentLabel="SON Form">
                   <div className='container'>
-                    <SonModal cname={cname} address={address } business={business} email={email}></SonModal>
-                    <button onClick={()=>this.closeModal('sonModalIsOpen')} className='btn green' >Submit</button>
+                    <SonModal cname={cname} address={address} business={business} email={email}></SonModal>
+                    <button onClick={() => this.closeModal('sonModalIsOpen')} className='btn green' >Submit</button>
                   </div>
-                  
+
                 </Modal>
               </div>
             </div>
@@ -365,7 +382,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addReserve: (id,reg_id,cname,address, email, phone) => { dispatch({ type: 'CREATE_RESERVATION', id: id, reg_id:reg_id, cname:cname,address:address, email: email, phone:phone }) }
+    addReserve: (id, reg_id, cname, address, email, phone) => { dispatch({ type: 'CREATE_RESERVATION', id: id, reg_id: reg_id, cname: cname, address: address, email: email, phone: phone }) }
   }
 
 }

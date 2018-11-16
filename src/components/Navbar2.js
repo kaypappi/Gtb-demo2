@@ -3,6 +3,7 @@ import '../index.css'
 import Img1 from '../images/gtblogo.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Link, NavLink } from 'react-router-dom'
+import Sidebar from './Sidebar2'
 
 const Navbar2 = () => {
     const logo = {
@@ -18,7 +19,7 @@ const Navbar2 = () => {
 
     return (
         <div className=''>
-            <div className='row'>
+            <div className='row hide-on-med-and-down'>
                 <Link to='/' className="brand-logo right"><img style={logo} src={Img1} alt=""></img></Link>
                 <div className='col s6 m5 tria'>
                     <nav className='transparent z-depth-0'>
@@ -43,7 +44,7 @@ const Navbar2 = () => {
                 </div>
             </div>
 
-            <div className='row'>
+            <div className='row hide-on-med-and-down'>
                 <div className='col s12 m8 '>
                     <nav className='transparent z-depth-0'>
 
@@ -58,6 +59,8 @@ const Navbar2 = () => {
                     </nav>
                 </div>
             </div>
+            <Sidebar></Sidebar>
+            
 
         </div>
 
