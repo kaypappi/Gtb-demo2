@@ -21,6 +21,9 @@ import ProfilePage from './pages/ProfilePage'
 library.add(faGhost, faSearch, faHome, faArrowRight, faArrowDown, faLock, faPlus, faCreditCard, faUniversity, faBars)
 
 class App extends Component {
+  componentDidMount() {
+    this.props.history.push('/')
+  }
   render() {
     return (
       <BrowserRouter>
